@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "508772977198",
+    "project_id": "dispenduk-5daa0",
+    "storage_bucket": "dispenduk-5daa0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508772977198:android:ae8a5d174076a7ad96edbf",
+        "android_client_info": {
+          "package_name": "com.example.dispenduk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508772977198-pao389n8q4lu9atmdfesdb9o3crikqo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6ySDjMWai2yi9EljM6Z_DwvhBqMO2erk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508772977198-pao389n8q4lu9atmdfesdb9o3crikqo9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
