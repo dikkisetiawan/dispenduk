@@ -21,11 +21,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController(text: '');
   final TextEditingController nomorIndukKependudukanController =
       TextEditingController(text: '');
-  final TextEditingController tanggalLahirController =
-      TextEditingController(text: '');
   final TextEditingController tempatLahirController =
       TextEditingController(text: '');
 
+  DateTime? _dateTime;
   bool passwordVisible = false;
   bool passwordConfrimationVisible = false;
   bool isChecked = false;
@@ -38,8 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: kBackgroundColor,
       body: bodyWidget(context),
     );
   }
@@ -47,12 +45,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   ListView bodyWidget(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(defaultMargin),
+      physics: const BouncingScrollPhysics(),
       children: [
         const KtitleWidget(),
         const SizedBox(
           height: defaultMargin,
         ),
-        formWidget(),
+        formWidget(context),
         const SizedBox(
           height: defaultMargin,
         ),
@@ -95,6 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   BlocConsumer<AuthCubit, AuthState> buttonWidget() {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
+        print('the state is $state');
         if (state is AuthSuccess) {
           Navigator.push(
               context,
@@ -125,17 +125,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           onPressed: () {
             isChecked
                 ? context.read<AuthCubit>().signUp(
-                      namaLengkap: nameController.text,
-                      email: emailController.text,
-                      password: passwordController.text,
-                      idKartuKeluarga:
-                          int.tryParse(idKartuKeluargaController.text) ?? 0,
-                      nomorIndukKependudukan:
-                          int.tryParse(nomorIndukKependudukanController.text) ??
-                              0,
-                      tanggalLahir:
-                          DateTime.tryParse(tanggalLahirController.text)!,
-                      tempatLahir: tempatLahirController.text,
+                      namaLengkap: 'test user',
+                      email: 'testuser@gmail.com',
+                      password: '123456',
+                      idKartuKeluarga: 234234312,
+                      nomorIndukKependudukan: 36235235,
+                      tanggalLahir: _dateTime!,
+                      tempatLahir: 'surabaya',
                     )
                 : ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -200,7 +196,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Form formWidget() {
+  Form formWidget(BuildContext context) {
     return Form(
       child: Column(
         children: [
@@ -239,7 +235,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           KtextFieldWidget(
             hintText: 'No KK',
             controller: idKartuKeluargaController,
-            suffixIcon: const SizedBox(),
+            suffixIcon: const Icon(Icons.card_membership),
           ),
           const SizedBox(
             height: defaultMargin,
@@ -253,22 +249,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
             height: defaultMargin,
           ),
           KtextFieldWidget(
-            hintText: 'Tanggal Lahir',
-            controller: tanggalLahirController,
+            hintText: 'Tempat Lahir',
+            controller: tempatLahirController,
             suffixIcon: const SizedBox(),
           ),
           const SizedBox(
             height: defaultMargin,
           ),
-          KtextFieldWidget(
-            hintText: 'Tempat Lahir',
-            controller: tempatLahirController,
-            suffixIcon: const SizedBox(),
-          ),
+          dateTimeWidget(context)
         ],
       ),
     );
   }
+
+  Row dateTimeWidget(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 3,
+          child: KprimaryButtonWidget(
+            buttonColor: kDarkGreyColor,
+            textValue: _dateTime == null
+                ? 'Tanggal Lahir'
+                : 'Tanggal ${_dateTime!.day} Bulan ${_dateTime!.month} ${_dateTime!.year}',
+            textColor: kWhiteColor,
+            onPressed: () {
+              showDatePickerWidget(context);
+            },
+          ),
+        ),
+        IconButton(
+            onPressed: () {
+              showDatePickerWidget(context);
+            },
+            icon: Icon(
+              Icons.date_range,
+              color: kDarkGreyColor,
+            ))
+      ],
+    );
+  }
+
+  Future<DateTime?> showDatePickerWidget(BuildContext context) =>
+      showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime.now())
+          .then((date) {
+        setState(() {
+          _dateTime = date;
+        });
+      });
 }
 
 class KtitleWidget extends StatelessWidget {
