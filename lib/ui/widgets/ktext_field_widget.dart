@@ -19,7 +19,7 @@ class KtextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: kDarkGreyColor,
+        color: kGreyColor,
         borderRadius: BorderRadius.circular(14.0),
       ),
       child: TextFormField(
