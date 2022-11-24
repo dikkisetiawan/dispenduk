@@ -13,15 +13,8 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController nameController = TextEditingController(text: '');
   final TextEditingController emailController = TextEditingController(text: '');
   final TextEditingController passwordController =
-      TextEditingController(text: '');
-  final TextEditingController idKartuKeluargaController =
-      TextEditingController(text: '');
-  final TextEditingController nomorIndukKependudukanController =
-      TextEditingController(text: '');
-  final TextEditingController tempatLahirController =
       TextEditingController(text: '');
 
   DateTime? _dateTime;
@@ -125,13 +118,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           onPressed: () {
             isChecked
                 ? context.read<AuthCubit>().signUp(
-                      namaLengkap: 'test user',
-                      email: 'testuser@gmail.com',
+                      email: 'test@email.com',
                       password: '123456',
-                      idKartuKeluarga: 234234312,
-                      nomorIndukKependudukan: 36235235,
-                      tanggalLahir: _dateTime!,
-                      tempatLahir: 'surabaya',
                     )
                 : ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -201,14 +189,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Column(
         children: [
           KtextFieldWidget(
-            hintText: 'Name',
-            controller: nameController,
-            suffixIcon: const SizedBox(),
-          ),
-          const SizedBox(
-            height: defaultMargin,
-          ),
-          KtextFieldWidget(
             hintText: 'Email',
             controller: emailController,
             suffixIcon: const SizedBox(),
@@ -232,31 +212,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           const SizedBox(
             height: defaultMargin,
           ),
-          KtextFieldWidget(
-            hintText: 'No KK',
-            controller: idKartuKeluargaController,
-            suffixIcon: const Icon(Icons.card_membership),
+          const SizedBox(
+            height: defaultMargin,
           ),
           const SizedBox(
             height: defaultMargin,
           ),
-          KtextFieldWidget(
-            hintText: 'NIK',
-            controller: nomorIndukKependudukanController,
-            suffixIcon: const SizedBox(),
-          ),
-          const SizedBox(
-            height: defaultMargin,
-          ),
-          KtextFieldWidget(
-            hintText: 'Tempat Lahir',
-            controller: tempatLahirController,
-            suffixIcon: const SizedBox(),
-          ),
-          const SizedBox(
-            height: defaultMargin,
-          ),
-          dateTimeWidget(context)
         ],
       ),
     );

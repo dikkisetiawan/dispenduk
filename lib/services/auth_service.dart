@@ -19,34 +19,26 @@ class AuthService {
 
       return user;
     } catch (e) {
-      print('Mencoba signin $e');
-      rethrow;
+      print('services Mencoba signin $e');
+      throw e;
     }
   }
 
 //register
   Future<PersonModel> signUp({
-    required String namaLengkap,
     required String email,
     required String password,
-    required int nomorIndukKependudukan,
-    required int idKartuKeluarga,
-    required String tempatLahir,
-    required DateTime tanggalLahir,
   }) async {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
       PersonModel user = PersonModel(
-          id: userCredential.user!.uid,
-          namaLengkap: namaLengkap,
-          email: email,
-          password: password,
-          idKartuKeluarga: idKartuKeluarga,
-          nomorIndukKependudukan: nomorIndukKependudukan,
-          tanggalLahir: tanggalLahir,
-          tempatLahir: tempatLahir);
+        id: userCredential.user!.uid,
+        email: email,
+        password: password,
+        tanggalLahir: null,
+      );
 
       await UserService().setUser(user);
 

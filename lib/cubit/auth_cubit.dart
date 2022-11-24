@@ -20,30 +20,23 @@ class AuthCubit extends Cubit<AuthState> {
       PersonModel user =
           await AuthService().signIn(email: email, password: password);
       emit(AuthSuccess(user));
+      print('cubit mencoba signin : $user');
     } catch (e) {
       emit(AuthFailed(e.toString()));
+      print('cubit mencoba signin : $e');
     }
   }
 
   void signUp({
-    required String namaLengkap,
     required String email,
     required String password,
-    required int nomorIndukKependudukan,
-    required int idKartuKeluarga,
-    required String tempatLahir,
-    required DateTime tanggalLahir,
   }) async {
     try {
       emit(AuthLoading());
       PersonModel user = await AuthService().signUp(
-          namaLengkap: namaLengkap,
-          email: email,
-          password: password,
-          idKartuKeluarga: idKartuKeluarga,
-          nomorIndukKependudukan: nomorIndukKependudukan,
-          tanggalLahir: tanggalLahir,
-          tempatLahir: tempatLahir);
+        email: email,
+        password: password,
+      );
       print('cubit mencoba signup : $user');
       emit(AuthSuccess(user));
     } catch (e) {

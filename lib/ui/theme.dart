@@ -10,7 +10,7 @@ Color kPinkColor = const Color(0xffEB819C);
 
 //Secondary Color
 Color kDangerColor = const Color(0xffF27D81);
-Color kWarningColor = const Color(0xffF6CE7E);
+Color kWarningColor = kRedColor;
 Color kSuccessColor = const Color(0xffC3ED6E);
 Color kInfoColor = const Color(0xff60B2F0);
 
