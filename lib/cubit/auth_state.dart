@@ -12,7 +12,7 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
-  final PersonModel user;
+  final UserModel user;
 
   AuthSuccess(this.user);
 

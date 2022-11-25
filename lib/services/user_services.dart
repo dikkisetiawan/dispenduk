@@ -1,40 +1,68 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '/models/person_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../models/user_model.dart';
 
 class UserService {
   final CollectionReference _userReference =
       FirebaseFirestore.instance.collection('users');
 
-  Future<void> setUser(PersonModel user) async {
+  User? credentialUser = FirebaseAuth.instance.currentUser;
+
+  Future<void> setUser(UserModel user) async {
     try {
       _userReference.doc(user.id).set({
-        'name': user.namaLengkap,
         'email': user.email,
-        'password': user.password,
+        'namaLengkap': user.namaLengkap,
+        'kk': user.idKartuKeluarga,
         'nik': user.nomorIndukKependudukan,
-        'nokk': user.idKartuKeluarga,
         'tempatLahir': user.tempatLahir,
         'tanggalLahir': user.tanggalLahir,
       });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> updateUser(UserModel user) async {
+    try {
+      _userReference.doc(credentialUser!.uid).update({
+        'namaLengkap': user.namaLengkap,
+        'kk': user.idKartuKeluarga,
+        'nik': user.nomorIndukKependudukan,
+        'tempatLahir': user.tempatLahir,
+        'tanggalLahir': user.tanggalLahir.toString(),
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<UserModel> getCurrentUser() async {
+    try {
+      DocumentSnapshot snapshot =
+          await _userReference.doc(credentialUser!.uid).get();
+      return UserModel(
+        email: snapshot['email'],
+      );
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<PersonModel> getUserById(String id) async {
+  Future<UserModel> getDataCurrentUser() async {
     try {
-      DocumentSnapshot snapshot = await _userReference.doc(id).get();
-      return PersonModel(
-        id: id,
-        namaLengkap: snapshot['name'],
+      DocumentSnapshot snapshot =
+          await _userReference.doc(credentialUser!.uid).get();
+      return UserModel(
         email: snapshot['email'],
-        password: snapshot['password'],
-        idKartuKeluarga: snapshot['nokk'],
         nomorIndukKependudukan: snapshot['nik'],
-        tanggalLahir: snapshot['tempatLahir'],
-        tempatLahir: snapshot['tanggalLahir'],
+        idKartuKeluarga: snapshot['kk'],
+        namaLengkap: snapshot['namaLengkap'],
+        tempatLahir: snapshot['tempatLahir'],
+        tanggalLahir: DateTime.tryParse(snapshot['tanggalLahir']),
       );
     } catch (e) {
+      print('user_service.dart get data error $e');
       rethrow;
     }
   }

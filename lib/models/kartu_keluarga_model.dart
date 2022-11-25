@@ -1,11 +1,11 @@
 //obyek keluarga
 import 'package:equatable/equatable.dart';
 
-import '/models/person_model.dart';
+import 'user_model.dart';
 
 class KartuKeluargaModel extends Equatable {
   final int? idKartuKeluarga;
-  final List<PersonModel> anggotaKeluarga;
+  final List<UserModel> anggotaKeluarga;
 
   KartuKeluargaModel(this.anggotaKeluarga, {this.idKartuKeluarga});
 

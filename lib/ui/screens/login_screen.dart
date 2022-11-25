@@ -1,3 +1,5 @@
+import 'package:dispenduk/ui/screens/konfirmasi_request_layanan_screen.dart';
+
 import '/ui/widgets/kprimary_button_widget.dart';
 import '/ui/widgets/ktext_field_widget.dart';
 
@@ -27,10 +29,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    emailController;
+    passwordController;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: kBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
@@ -88,15 +98,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
+                          builder: (context) =>
+                              KonfirmasiRequestLayananScreen(),
                         ),
                         (route) => false);
                   } else if (state is AuthFailed) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
+                        behavior: SnackBarBehavior.floating,
                         backgroundColor: kWarningColor,
                         content: Text(
                           state.error,
+                          style: whiteTextStyle,
                         ),
                       ),
                     );
@@ -108,17 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return KprimaryButtonWidget(
-                    buttonColor: kPrimaryColor,
-                    textValue: 'Login',
-                    textColor: Colors.white,
-                    onPressed: () {
-                      context.read<AuthCubit>().signIn(
-                            email: 'test@email.com',
-                            password: '123456',
-                          );
-                    },
-                  );
+                  return loginButtonWidget(context);
                 },
               ),
               const SizedBox(
@@ -169,5 +172,19 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
     ;
+  }
+
+  KprimaryButtonWidget loginButtonWidget(BuildContext context) {
+    return KprimaryButtonWidget(
+      buttonColor: kPrimaryColor,
+      textValue: 'Login',
+      textColor: Colors.white,
+      onPressed: () {
+        context.read<AuthCubit>().signIn(
+              email: 'test@email.com',
+              password: '123456',
+            );
+      },
+    );
   }
 }

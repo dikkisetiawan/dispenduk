@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import '/models/person_model.dart';
-import '/services/user_services.dart';
+import '../models/user_model.dart';
+import 'user_services.dart';
 
 class AuthService {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
 //login
-  Future<PersonModel> signIn({
+  Future<UserModel> signInService({
     required String email,
     required String password,
   }) async {
@@ -14,8 +14,7 @@ class AuthService {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
-      PersonModel user =
-          await UserService().getUserById(userCredential.user!.uid);
+      UserModel user = await UserService().getDataCurrentUser();
 
       return user;
     } catch (e) {
@@ -25,7 +24,7 @@ class AuthService {
   }
 
 //register
-  Future<PersonModel> signUp({
+  Future<UserModel> signUp({
     required String email,
     required String password,
   }) async {
@@ -33,11 +32,10 @@ class AuthService {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      PersonModel user = PersonModel(
+      UserModel user = UserModel(
         id: userCredential.user!.uid,
         email: email,
         password: password,
-        tanggalLahir: null,
       );
 
       await UserService().setUser(user);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../widgets/ktitle_widget.dart';
 import '/cubit/auth_cubit.dart';
 
 import '../theme.dart';
@@ -16,11 +17,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController(text: '');
   final TextEditingController passwordController =
       TextEditingController(text: '');
+  final TextEditingController confirmPasswordController =
+      TextEditingController(text: '');
 
-  DateTime? _dateTime;
   bool passwordVisible = false;
   bool passwordConfrimationVisible = false;
   bool isChecked = false;
+  bool isPasswordMatch = false;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailController;
+    passwordController;
+    confirmPasswordController;
+    super.dispose();
+  }
+
   void togglePassword() {
     setState(() {
       passwordVisible = !passwordVisible;
@@ -29,9 +42,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: bodyWidget(context),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: kBackgroundColor,
+        body: bodyWidget(context),
+      ),
     );
   }
 
@@ -40,11 +55,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       padding: const EdgeInsets.all(defaultMargin),
       physics: const BouncingScrollPhysics(),
       children: [
-        const KtitleWidget(),
+        const KtitleWidget('Register new\naccount'),
         const SizedBox(
           height: defaultMargin,
         ),
-        formWidget(context),
+        formWidget(),
         const SizedBox(
           height: defaultMargin,
         ),
@@ -92,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const KonfirmasiRequestLayananScreen(),
+                builder: (context) => KonfirmasiRequestLayananScreen(),
               ));
         } else if (state is AuthFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -184,7 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Form formWidget(BuildContext context) {
+  Form formWidget() {
     return Form(
       child: Column(
         children: [
@@ -212,76 +227,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
           const SizedBox(
             height: defaultMargin,
           ),
-          const SizedBox(
-            height: defaultMargin,
+          KtextFieldWidget(
+            hintText: 'Confirm Password',
+            controller: confirmPasswordController,
+            obscureText: !passwordVisible,
+            suffixIcon: IconButton(
+              color: kDarkGreyColor,
+              splashRadius: 1,
+              icon: Icon(passwordVisible
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined),
+              onPressed: togglePassword,
+            ),
           ),
           const SizedBox(
             height: defaultMargin,
           ),
         ],
       ),
-    );
-  }
-
-  Row dateTimeWidget(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: KprimaryButtonWidget(
-            buttonColor: kDarkGreyColor,
-            textValue: _dateTime == null
-                ? 'Tanggal Lahir'
-                : 'Tanggal ${_dateTime!.day} Bulan ${_dateTime!.month} ${_dateTime!.year}',
-            textColor: kWhiteColor,
-            onPressed: () {
-              showDatePickerWidget(context);
-            },
-          ),
-        ),
-        IconButton(
-            onPressed: () {
-              showDatePickerWidget(context);
-            },
-            icon: Icon(
-              Icons.date_range,
-              color: kDarkGreyColor,
-            ))
-      ],
-    );
-  }
-
-  Future<DateTime?> showDatePickerWidget(BuildContext context) =>
-      showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2000),
-              lastDate: DateTime.now())
-          .then((date) {
-        setState(() {
-          _dateTime = date;
-        });
-      });
-}
-
-class KtitleWidget extends StatelessWidget {
-  const KtitleWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Register new\naccount',
-          style: blackTextStyle,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-      ],
     );
   }
 }

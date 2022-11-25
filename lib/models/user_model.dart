@@ -1,24 +1,24 @@
 import 'package:dispenduk/models/kartu_keluarga_model.dart';
 
 //obyek Orang
-class PersonModel extends KartuKeluargaModel {
+class UserModel extends KartuKeluargaModel {
   final String? id;
   final int? nomorIndukKependudukan;
   final String? namaLengkap;
   final DateTime? tanggalLahir;
   final String? tempatLahir;
-  final String email;
-  final String password;
+  final String? email;
+  final String? password;
 
-  PersonModel({
+  UserModel({
     this.id,
     this.nomorIndukKependudukan,
     super.idKartuKeluarga,
     this.namaLengkap,
     this.tempatLahir,
     this.tanggalLahir,
-    required this.email,
-    required this.password,
+    this.email,
+    this.password,
   }) : super([]);
 
   @override
