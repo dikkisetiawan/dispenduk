@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:dispenduk/ui/screens/home_screen.dart';
+import '/ui/screens/storage_screen.dart';
 
 import '/cubit/request_layanan_cubit.dart';
 import '/models/request_layanan_model.dart';
@@ -49,6 +49,8 @@ class _KonfirmasiRequestLayananScreenState
   ];
 
   List<String?> keterangan = [
+    null,
+    null,
     'Berkas Kurang',
     'Harap periksa Dokumen anda',
     'Foto KTP anda belum diperbarui',
@@ -58,8 +60,41 @@ class _KonfirmasiRequestLayananScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar(),
       backgroundColor: kBackgroundColor,
       body: bodyWidget(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: buttonWidget(),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      elevation: 5,
+      toolbarHeight: 50,
+      backgroundColor: kBackgroundColor,
+      title: Column(
+        children: [
+          SizedBox(
+            height: defaultMargin,
+          ),
+          const KtitleWidget('Permohonan'),
+        ],
+      ),
+      actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const StorageScreen(),
+                  ));
+            },
+            icon: const Icon(
+              Icons.attach_file_rounded,
+              color: Colors.blueAccent,
+            ))
+      ],
     );
   }
 
@@ -68,9 +103,6 @@ class _KonfirmasiRequestLayananScreenState
       padding: const EdgeInsets.all(defaultMargin),
       physics: const BouncingScrollPhysics(),
       children: [
-        const SizedBox(
-          height: defaultMargin * 2,
-        ),
         Text(
           'Anda Memilih Layanan \n${widget.layananDipilih}',
           style: greenTextStyle,
@@ -78,32 +110,9 @@ class _KonfirmasiRequestLayananScreenState
         const SizedBox(
           height: defaultMargin,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const KtitleWidget('Konfirmasi Data anda'),
-            IconButton(
-                onPressed: () {
-                  context.read<AuthCubit>().signOut();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomeScreen(),
-                      ));
-                },
-                icon: Icon(Icons.logout))
-          ],
-        ),
-        const SizedBox(
-          height: defaultMargin,
-        ),
         formBuilderWidget(),
         const SizedBox(
           height: defaultMargin,
-        ),
-        buttonWidget(),
-        const SizedBox(
-          height: defaultMargin * 2,
         ),
       ],
     );
@@ -217,11 +226,11 @@ class _KonfirmasiRequestLayananScreenState
     );
   }
 
-  KprimaryButtonWidget tanggalButtonWidget(
-      BuildContext context, DateTime? tanggalLahir) {
+  Widget tanggalButtonWidget(BuildContext context, DateTime? tanggalLahir) {
     if (tanggalLahir != null) {
       _dateTime = tanggalLahir;
     }
+
     return KprimaryButtonWidget(
       buttonColor: kDarkGreyColor.withOpacity(0.5),
       textValue: _dateTime == null
@@ -246,21 +255,21 @@ class _KonfirmasiRequestLayananScreenState
         });
       });
 
-  BlocConsumer<AuthCubit, AuthState> buttonWidget() {
-    return BlocConsumer<AuthCubit, AuthState>(
+  BlocConsumer<RequestLayananCubit, RequestLayananState> buttonWidget() {
+    return BlocConsumer<RequestLayananCubit, RequestLayananState>(
       listener: (context, state) {
         print('konfirmasi_layanan_request_screen.dart the state is $state');
-        if (state is AuthSuccess) {
-          print('update success ${state.user}');
 
+        if (state is CreateRequestLayananSuccess) {
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => RequestScreen(),
               ));
-        } else if (state is AuthFailed) {
+        } else if (state is CreateRequestLayananFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              behavior: SnackBarBehavior.floating,
               backgroundColor: kWarningColor,
               content: Text(
                 state.error,
@@ -271,31 +280,34 @@ class _KonfirmasiRequestLayananScreenState
         }
       },
       builder: (context, state) {
-        if (state is AuthLoading) {
+        if (state is CreateRequestLayananLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-        return KprimaryButtonWidget(
-          buttonColor: kPrimaryColor,
-          textValue: 'Konfirmasi Data',
-          textColor: kWhiteColor,
-          onPressed: () {
-            context.read<AuthCubit>().updateCurrentUser(
-                nomorIndukKependudukan:
-                    int.parse(nomorIndukKependudukanController.text),
-                idKartuKeluarga: int.parse(idKartuKeluargaController.text),
-                namaLengkap: namaLengkapController.text,
-                tempatLahir: tempatLahirController.text,
-                tanggalLahir: _dateTime!);
+        return Padding(
+          padding: const EdgeInsets.all(defaultMargin),
+          child: KprimaryButtonWidget(
+            buttonColor: kPrimaryColor,
+            textValue: 'Konfirmasi Data',
+            textColor: kWhiteColor,
+            onPressed: () {
+              context.read<AuthCubit>().updateCurrentUser(
+                  nomorIndukKependudukan:
+                      int.parse(nomorIndukKependudukanController.text),
+                  idKartuKeluarga: int.parse(idKartuKeluargaController.text),
+                  namaLengkap: namaLengkapController.text,
+                  tempatLahir: tempatLahirController.text,
+                  tanggalLahir: _dateTime!);
 
-            context.read<RequestLayananCubit>().createRequestLayanan(
-                RequestLayananModel(
-                    tanggalPermohonan: DateTime.now(),
-                    keterangan: keterangan[Random().nextInt(3)],
-                    layanan: widget.layananDipilih,
-                    status: status[Random().nextInt(4)]));
-          },
+              context.read<RequestLayananCubit>().createRequestLayanan(
+                  RequestLayananModel(
+                      tanggalPermohonan: DateTime.now(),
+                      keterangan: keterangan[Random().nextInt(3)],
+                      layanan: widget.layananDipilih,
+                      status: status[Random().nextInt(4)]));
+            },
+          ),
         );
       },
     );

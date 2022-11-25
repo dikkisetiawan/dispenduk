@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../widgets/info_layanan_widget.dart';
 import '../widgets/ktitle_widget.dart';
 import '/cubit/auth_cubit.dart';
-
 import '../theme.dart';
 import '../widgets/ktext_field_widget.dart';
 import '../widgets/kprimary_button_widget.dart';
@@ -113,22 +113,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         print('the state is $state');
-        if (state is AuthSuccess) {
+        if (state is AuthFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: kWarningColor,
+              content: Text(
+                state.error,
+                style: whiteTextStyle,
+              ),
+            ),
+          );
+        }
+        if (state is AuthState) {
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => KonfirmasiRequestLayananScreen(
                     layananDipilih: widget.layananDipilih),
               ));
-        } else if (state is AuthFailed) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: kWarningColor,
-              content: Text(
-                state.error,
-              ),
-            ),
-          );
         }
       },
       builder: (context, state) {
@@ -137,6 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: CircularProgressIndicator(),
           );
         }
+
         return KprimaryButtonWidget(
           buttonColor: kPrimaryColor,
           textValue: 'Register',
@@ -149,9 +153,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     )
                 : ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
+                      behavior: SnackBarBehavior.floating,
                       backgroundColor: kWarningColor,
-                      content: const Text(
+                      content: Text(
                         'Apakah anda setuju dengan Syarat dan Ketentuan di atas?',
+                        style: whiteTextStyle,
                       ),
                     ),
                   );

@@ -11,6 +11,10 @@ class RequestInitial extends RequestLayananState {}
 
 class FetchRequestLoading extends RequestLayananState {}
 
+class CreateRequestLayananLoading extends RequestLayananState {}
+
+class CreateRequestLayananSuccess extends RequestLayananState {}
+
 class FetchAllRequestSuccess extends RequestLayananState {
   final List<RequestLayananModel> requests;
 
@@ -24,6 +28,16 @@ class FetchRequestFailed extends RequestLayananState {
   final String error;
 
   const FetchRequestFailed(this.error);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [error];
+}
+
+class CreateRequestLayananFailed extends RequestLayananState {
+  final String error;
+
+  const CreateRequestLayananFailed(this.error);
 
   @override
   // TODO: implement props

@@ -35,7 +35,7 @@ class _RequestScreenState extends State<RequestScreen> {
         child: BlocBuilder<RequestLayananCubit, RequestLayananState>(
           builder: (context, state) {
             if (state is FetchRequestLoading) {
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             } else if (state is FetchAllRequestSuccess) {
               if (state.requests.isEmpty) {
                 return Text(
@@ -60,7 +60,7 @@ class _RequestScreenState extends State<RequestScreen> {
               }
             }
 
-            return SizedBox();
+            return const SizedBox();
           },
         ),
       ),
@@ -219,7 +219,7 @@ class ListItemWidget extends StatelessWidget {
         const SizedBox(
           height: defaultMargin / 2,
         ),
-        keterangan == null ? SizedBox() : keteranganWidget(keterangan!)
+        keterangan == null ? const SizedBox() : keteranganWidget(keterangan!)
       ],
     );
   }

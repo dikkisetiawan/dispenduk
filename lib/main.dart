@@ -26,11 +26,9 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        theme: ThemeData(
-          fontFamily: 'Lato',
-        ),
         debugShowCheckedModeBanner: false,
         home: HomeScreen(),
+        routes: {},
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_model.dart';
-import 'user_services.dart';
+import 'user_service.dart';
 
 class AuthService {
   FirebaseAuth _auth = FirebaseAuth.instance;

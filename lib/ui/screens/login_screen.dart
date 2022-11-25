@@ -44,141 +44,141 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: kBackgroundColor,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          padding: EdgeInsets.all(defaultMargin),
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InfoLayananWidget(layananDipilih: widget.layananDipilih),
+                const SizedBox(
+                  height: defaultMargin,
+                ),
+                Text('Harap Login\nterlebih dahulu', style: blackTextStyle),
+                const SizedBox(
+                  height: defaultMargin,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: defaultMargin,
+            ),
+            Form(
+              child: Column(
                 children: [
-                  InfoLayananWidget(layananDipilih: widget.layananDipilih),
+                  KtextFieldWidget(
+                    hintText: 'Email',
+                    suffixIcon: const SizedBox(),
+                    controller: emailController,
+                  ),
                   const SizedBox(
                     height: defaultMargin,
                   ),
-                  Text('Harap Login\nterlebih dahulu', style: blackTextStyle),
-                  const SizedBox(
-                    height: defaultMargin,
+                  KtextFieldWidget(
+                    hintText: 'Password',
+                    controller: passwordController,
+                    obscureText: !passwordVisible,
+                    suffixIcon: IconButton(
+                      color: kDarkGreyColor,
+                      splashRadius: 1,
+                      icon: Icon(passwordVisible
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined),
+                      onPressed: togglePassword,
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: defaultMargin,
-              ),
-              Form(
-                child: Column(
-                  children: [
-                    KtextFieldWidget(
-                      hintText: 'Email',
-                      suffixIcon: const SizedBox(),
-                      controller: emailController,
+            ),
+            const SizedBox(
+              height: defaultMargin,
+            ),
+            const SizedBox(
+              height: defaultMargin,
+            ),
+            BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is AuthSuccess) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          KonfirmasiRequestLayananScreen(
+                              layananDipilih: widget.layananDipilih),
                     ),
-                    const SizedBox(
-                      height: defaultMargin,
-                    ),
-                    KtextFieldWidget(
-                      hintText: 'Password',
-                      controller: passwordController,
-                      obscureText: !passwordVisible,
-                      suffixIcon: IconButton(
-                        color: kDarkGreyColor,
-                        splashRadius: 1,
-                        icon: Icon(passwordVisible
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined),
-                        onPressed: togglePassword,
+                  );
+                } else if (state is AuthFailed) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: kWarningColor,
+                      content: Text(
+                        state.error,
+                        style: whiteTextStyle,
                       ),
                     ),
-                  ],
-                ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                if (state is AuthLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return loginButtonWidget(context);
+              },
+            ),
+            const SizedBox(
+              height: defaultMargin,
+            ),
+            Center(
+              child: Text(
+                'OR',
+                style: greyTextStyle,
               ),
-              const SizedBox(
-                height: defaultMargin,
-              ),
-              const SizedBox(
-                height: defaultMargin,
-              ),
-              BlocConsumer<AuthCubit, AuthState>(
-                listener: (context, state) {
-                  if (state is AuthSuccess) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => KonfirmasiRequestLayananScreen(
-                            layananDipilih: widget.layananDipilih),
-                      ),
-                    );
-                  } else if (state is AuthFailed) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        backgroundColor: kWarningColor,
-                        content: Text(
-                          state.error,
-                          style: whiteTextStyle,
-                        ),
-                      ),
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is AuthLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return loginButtonWidget(context);
-                },
-              ),
-              const SizedBox(
-                height: defaultMargin,
-              ),
-              Center(
-                child: Text(
-                  'OR',
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            KprimaryButtonWidget(
+              buttonColor: kWhiteColor,
+              textValue: 'Login dengan Google',
+              textColor: kBlackColor,
+              onPressed: () {},
+            ),
+            const SizedBox(
+              height: defaultMargin * 2,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Belum Punya Akun?',
                   style: greyTextStyle,
                 ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              KprimaryButtonWidget(
-                buttonColor: kWhiteColor,
-                textValue: 'Login with Google',
-                textColor: kBlackColor,
-                onPressed: () {},
-              ),
-              const SizedBox(
-                height: defaultMargin * 2,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Belum Punya Akun?',
-                    style: greyTextStyle,
+                SizedBox(
+                  width: defaultMargin / 2,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterScreen(
+                                  layananDipilih: widget.layananDipilih,
+                                )));
+                  },
+                  child: Text(
+                    'Register',
+                    style: buttonTextStyle,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterScreen(
-                                    layananDipilih: widget.layananDipilih,
-                                  )));
-                    },
-                    child: Text(
-                      'Register',
-                      style: buttonTextStyle,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

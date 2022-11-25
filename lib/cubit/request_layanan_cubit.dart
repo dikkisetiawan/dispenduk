@@ -11,12 +11,12 @@ class RequestLayananCubit extends Cubit<RequestLayananState> {
 
   void createRequestLayanan(RequestLayananModel request) async {
     try {
-      emit(FetchRequestLoading());
+      emit(CreateRequestLayananLoading());
       await RequestLayananService().createRequestService(request);
-      emit(FetchAllRequestSuccess([]));
+      emit(CreateRequestLayananSuccess());
       print('success create request');
     } catch (e) {
-      emit(FetchRequestFailed(e.toString()));
+      emit(CreateRequestLayananFailed(e.toString()));
       print(e);
     }
   }

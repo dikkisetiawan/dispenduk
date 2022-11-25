@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 import '/services/auth_service.dart';
-import '../services/user_services.dart';
+import '../services/user_service.dart';
 
 part 'auth_state.dart';
 
@@ -22,10 +22,8 @@ class AuthCubit extends Cubit<AuthState> {
           await AuthService().signInService(email: email, password: password);
 
       emit(AuthSuccess(user));
-      print('cubit mencoba signin : $user');
     } catch (e) {
       emit(AuthFailed(e.toString()));
-      print('cubit mencoba signin : $e');
     }
   }
 
@@ -40,11 +38,9 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
 
-      print('cubit mencoba signup : $user');
       emit(AuthSuccess(user));
     } catch (e) {
       emit(AuthFailed(e.toString()));
-      print('cubit mencoba signup $e');
     }
   }
 
@@ -96,7 +92,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthLoading());
       await UserService().updateUser(user);
 
-      emit(AuthSuccess(user));
+      emit(AuthInitial());
     } catch (e) {
       emit(AuthFailed(e.toString()));
     }
