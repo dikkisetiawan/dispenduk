@@ -125,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           );
         }
-        if (state is AuthState) {
+        if (state is AuthSuccess) {
           Navigator.push(
               context,
               MaterialPageRoute(
