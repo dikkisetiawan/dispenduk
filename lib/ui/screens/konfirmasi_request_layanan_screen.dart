@@ -1,5 +1,11 @@
-import 'package:dispenduk/models/user_model.dart';
+import 'dart:math';
+
 import 'package:dispenduk/ui/screens/home_screen.dart';
+
+import '/cubit/request_layanan_cubit.dart';
+import '/models/request_layanan_model.dart';
+
+import '/ui/screens/request_screen.dart';
 
 import '/ui/theme.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +18,9 @@ import '../widgets/ktext_field_widget.dart';
 import '../widgets/ktitle_widget.dart';
 
 class KonfirmasiRequestLayananScreen extends StatefulWidget {
-  KonfirmasiRequestLayananScreen({super.key});
+  KonfirmasiRequestLayananScreen({super.key, required this.layananDipilih});
+
+  final String layananDipilih;
 
   @override
   State<KonfirmasiRequestLayananScreen> createState() =>
@@ -32,6 +40,21 @@ class _KonfirmasiRequestLayananScreenState
 
   DateTime? _dateTime;
 
+  List<Status> status = [
+    Status.Ditolak,
+    Status.Pending,
+    Status.Revisi,
+    Status.Validasi,
+    Status.Verifikasi
+  ];
+
+  List<String?> keterangan = [
+    'Berkas Kurang',
+    'Harap periksa Dokumen anda',
+    'Foto KTP anda belum diperbarui',
+    null
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +70,13 @@ class _KonfirmasiRequestLayananScreenState
       children: [
         const SizedBox(
           height: defaultMargin * 2,
+        ),
+        Text(
+          'Anda Memilih Layanan \n${widget.layananDipilih}',
+          style: greenTextStyle,
+        ),
+        const SizedBox(
+          height: defaultMargin,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -219,9 +249,15 @@ class _KonfirmasiRequestLayananScreenState
   BlocConsumer<AuthCubit, AuthState> buttonWidget() {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        print('the state is $state');
+        print('konfirmasi_layanan_request_screen.dart the state is $state');
         if (state is AuthSuccess) {
           print('update success ${state.user}');
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RequestScreen(),
+              ));
         } else if (state is AuthFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -252,6 +288,13 @@ class _KonfirmasiRequestLayananScreenState
                 namaLengkap: namaLengkapController.text,
                 tempatLahir: tempatLahirController.text,
                 tanggalLahir: _dateTime!);
+
+            context.read<RequestLayananCubit>().createRequestLayanan(
+                RequestLayananModel(
+                    tanggalPermohonan: DateTime.now(),
+                    keterangan: keterangan[Random().nextInt(3)],
+                    layanan: widget.layananDipilih,
+                    status: status[Random().nextInt(4)]));
           },
         );
       },

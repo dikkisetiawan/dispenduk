@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../widgets/info_layanan_widget.dart';
 import '../widgets/ktitle_widget.dart';
 import '/cubit/auth_cubit.dart';
 
@@ -9,6 +10,10 @@ import '../widgets/kprimary_button_widget.dart';
 import 'konfirmasi_request_layanan_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key, required this.layananDipilih});
+
+  final String layananDipilih;
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -42,11 +47,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: kBackgroundColor,
-        body: bodyWidget(context),
-      ),
+    return Scaffold(
+      backgroundColor: kBackgroundColor,
+      body: bodyWidget(context),
     );
   }
 
@@ -55,7 +58,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       padding: const EdgeInsets.all(defaultMargin),
       physics: const BouncingScrollPhysics(),
       children: [
-        const KtitleWidget('Register new\naccount'),
+        const SizedBox(
+          height: defaultMargin * 3,
+        ),
+        InfoLayananWidget(layananDipilih: widget.layananDipilih),
+        const SizedBox(
+          height: defaultMargin,
+        ),
+        const KtitleWidget('Harap Mendaftar \nterlebih dahulu'),
         const SizedBox(
           height: defaultMargin,
         ),
@@ -81,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Already have an account? ",
+          "Sudah Punya Akun? ",
           style: greyTextStyle,
         ),
         GestureDetector(
@@ -107,7 +117,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => KonfirmasiRequestLayananScreen(),
+                builder: (context) => KonfirmasiRequestLayananScreen(
+                    layananDipilih: widget.layananDipilih),
               ));
         } else if (state is AuthFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -133,14 +144,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
           onPressed: () {
             isChecked
                 ? context.read<AuthCubit>().signUp(
-                      email: 'test@email.com',
-                      password: '123456',
+                      email: emailController.text,
+                      password: passwordController.text,
                     )
                 : ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: kWarningColor,
                       content: const Text(
-                        'Are you agree with our Tems & Conditions?',
+                        'Apakah anda setuju dengan Syarat dan Ketentuan di atas?',
                       ),
                     ),
                   );
@@ -186,11 +197,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'By creating an account, you agree to our',
+              'Dengan membuat akun, anda setuju ',
               style: greyTextStyle,
             ),
             Text(
-              'Terms & Conditions',
+              ' Syarat & Ketentuan',
               style: buttonTextStyle,
             ),
           ],

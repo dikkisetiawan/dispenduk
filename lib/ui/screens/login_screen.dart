@@ -1,5 +1,6 @@
-import 'package:dispenduk/ui/screens/konfirmasi_request_layanan_screen.dart';
+import '/ui/screens/konfirmasi_request_layanan_screen.dart';
 
+import '../widgets/info_layanan_widget.dart';
 import '/ui/widgets/kprimary_button_widget.dart';
 import '/ui/widgets/ktext_field_widget.dart';
 
@@ -8,10 +9,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubit/auth_cubit.dart';
 import '../theme.dart';
-import 'home_screen.dart';
+
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key, required this.layananDipilih});
+
+  final String layananDipilih;
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -50,7 +55,11 @@ class _LoginScreenState extends State<LoginScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Login to your\naccount', style: blackTextStyle),
+                  InfoLayananWidget(layananDipilih: widget.layananDipilih),
+                  const SizedBox(
+                    height: defaultMargin,
+                  ),
+                  Text('Harap Login\nterlebih dahulu', style: blackTextStyle),
                   const SizedBox(
                     height: defaultMargin,
                   ),
@@ -95,13 +104,13 @@ class _LoginScreenState extends State<LoginScreen> {
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthSuccess) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              KonfirmasiRequestLayananScreen(),
-                        ),
-                        (route) => false);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => KonfirmasiRequestLayananScreen(
+                            layananDipilih: widget.layananDipilih),
+                      ),
+                    );
                   } else if (state is AuthFailed) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -149,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account? ",
+                    'Belum Punya Akun?',
                     style: greyTextStyle,
                   ),
                   GestureDetector(
@@ -157,7 +166,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RegisterScreen()));
+                              builder: (context) => RegisterScreen(
+                                    layananDipilih: widget.layananDipilih,
+                                  )));
                     },
                     child: Text(
                       'Register',
@@ -181,8 +192,8 @@ class _LoginScreenState extends State<LoginScreen> {
       textColor: Colors.white,
       onPressed: () {
         context.read<AuthCubit>().signIn(
-              email: 'test@email.com',
-              password: '123456',
+              email: emailController.text,
+              password: passwordController.text,
             );
       },
     );

@@ -43,41 +43,51 @@ class HomeScreen extends StatelessWidget {
   Widget listTileWidget(String key, int mapIndex, BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: defaultMargin),
-      child: ListTile(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginScreen(),
-              ));
-        },
-        shape: RoundedRectangleBorder(borderRadius: kBorderRadius),
-        contentPadding: const EdgeInsets.symmetric(
-            vertical: defaultMargin, horizontal: defaultMargin / 2),
-        tileColor: kWhiteColor,
-        hoverColor: kSecondaryColor,
-        leading: CircleAvatar(
-          backgroundColor: kPrimaryColor,
-          radius: 20,
-          child: Text(
-            mapIndex.toString(),
-            style: whiteTextStyle.copyWith(fontWeight: FontWeight.bold),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: kBorderRadius,
+        ),
+        elevation: 20,
+        child: ListTile(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      LoginScreen(layananDipilih: layananList[key]!),
+                ));
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: kBorderRadius,
           ),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              layananList[key]!,
-              style: greenTextStyle,
+          contentPadding: const EdgeInsets.symmetric(
+              vertical: defaultMargin, horizontal: defaultMargin / 2),
+          tileColor: kWhiteColor,
+          hoverColor: kSecondaryColor,
+          focusColor: kPrimaryColor,
+          leading: CircleAvatar(
+            backgroundColor: kPrimaryColor,
+            radius: 20,
+            child: Text(
+              mapIndex.toString(),
+              style: whiteTextStyle.copyWith(fontWeight: FontWeight.bold),
             ),
-            Text(
-              'Syarat: KTP, Surat',
-              style: greyTextStyle.copyWith(fontSize: 14),
-            )
-          ],
+          ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                layananList[key]!,
+                style: greenTextStyle,
+              ),
+              Text(
+                'Syarat: KTP, Surat',
+                style: greyTextStyle.copyWith(fontSize: 14),
+              )
+            ],
+          ),
+          trailing: const Text('20 Menit'),
         ),
-        trailing: const Text('20 Menit'),
       ),
     );
   }

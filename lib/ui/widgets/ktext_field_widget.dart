@@ -27,7 +27,8 @@ class KtextFieldWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: defaultMargin / 3),
                 child: Text(
                   title!,
-                  style: blackTextStyle.copyWith(letterSpacing: 0.0),
+                  style: blackTextStyle.copyWith(
+                      letterSpacing: 0.0, fontSize: 18.0),
                 ),
               )
             : SizedBox(),

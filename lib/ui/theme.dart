@@ -39,10 +39,10 @@ TextStyle greyTextStyle =
     TextStyle(color: kDarkGreyColor, fontSize: 18, fontWeight: regular);
 
 TextStyle buttonTextStyle =
-    TextStyle(color: kPrimaryColor, fontSize: 14, fontWeight: bold);
+    TextStyle(color: kPrimaryColor, fontSize: 18, fontWeight: bold);
 
 TextStyle blackTextStyle = TextStyle(
-    color: kBlackColor, fontSize: 18, fontWeight: bold, letterSpacing: 3);
+    color: kBlackColor, fontSize: 25, fontWeight: bold, letterSpacing: 3);
 
 //Circular Value
 const defaultCircular = 20.0;
