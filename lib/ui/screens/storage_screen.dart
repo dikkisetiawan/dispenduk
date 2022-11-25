@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:dispenduk/ui/theme.dart';
+import 'package:dispenduk/ui/widgets/kprimary_button_widget.dart';
 import 'package:intl/intl.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,128 +20,145 @@ class StorageScreen extends StatefulWidget {
 
 class _State extends State<StorageScreen> {
   bool _uploadRunning = false;
-  String _buttonCaption = "Select file to upload";
+  String _buttonCaption = "Pilih File untuk Upload";
   UploadTask? _task;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Center(child: Text("Firebase Storage"))),
-        body: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ListView(children: [
-              Card(
-                  color: Colors.grey.shade300,
-                  child: Column(children: [
-                    Container(height: 10),
-                    const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text("Upload a file to storage",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold))),
-                    Container(height: 10),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      ElevatedButton(
-                          onPressed: _uploadRunning
-                              ? null
-                              : () async {
-                                  var img = await _pickImage();
-                                  if (img == null) return;
+      appBar: appBarWidget(),
+      body: ListView(padding: const EdgeInsets.all(defaultMargin), children: [
+        Card(
+            color: kSecondaryColor,
+            child: Column(children: [
+              Container(height: defaultMargin),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: defaultMargin),
+                  child: Text(
+                      'Upload beberapa file hasil scanning Foto Dokumen anda',
+                      textAlign: TextAlign.center,
+                      style: blackTextStyle.copyWith(letterSpacing: 0.0))),
+              Container(height: defaultMargin),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                ElevatedButton(
+                    onPressed: _uploadRunning
+                        ? null
+                        : () async {
+                            var img = await _pickImage();
+                            if (img == null) return;
 
-                                  try {
-                                    _task = StorageService.uploadItem(
-                                        File(img.path), img.name);
+                            try {
+                              _task = StorageService.uploadItem(
+                                  File(img.path), img.name);
 
-                                    _uploadRunning = true;
-                                    setState(() {});
-
-                                    _task!.snapshotEvents.listen((snapshot) {
-                                      if (snapshot.state == TaskState.running) {
-                                        _buttonCaption =
-                                            "Uploading ... ${(100.0 * (snapshot.bytesTransferred / snapshot.totalBytes)).toStringAsFixed(0)}%";
-                                        _uploadRunning = true;
-                                        setState(() {});
-                                        return;
-                                      }
-
-                                      if (snapshot.state == TaskState.success) {
-                                        _uploadRunning = false;
-                                        _buttonCaption =
-                                            "Select file to upload";
-                                        _task = null;
-                                        setState(() {});
-                                        return;
-                                      }
-                                    });
-                                  } on FirebaseException catch (ex) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            backgroundColor: Colors.red,
-                                            content: Text(ex.message!)));
-                                  }
-                                },
-                          child: Text(_buttonCaption)),
-                      Container(width: 10),
-                      if (_uploadRunning && _task != null)
-                        IconButton(
-                            onPressed: () async {
-                              await _task!.cancel();
-                              _uploadRunning = false;
-                              _buttonCaption = "Select file to upload";
+                              _uploadRunning = true;
                               setState(() {});
-                            },
-                            icon: const Icon(Icons.stop_circle_outlined,
-                                size: 36, color: Colors.blueAccent))
-                    ]),
-                    Container(height: 10)
-                  ])),
-              Container(height: 10),
-              FutureBuilder(
-                  future: StorageService.getData(),
-                  initialData: const <String>[],
-                  builder: (ctx, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError) {
-                        return Center(child: Text(snapshot.error.toString()));
-                      } else {
-                        if (_uploadRunning) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
 
-                        var data = snapshot.data as List<FileDataModel>;
-                        if (data.isEmpty) {
-                          return Card(
-                              color: Colors.grey.shade300,
-                              child: const Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Center(
-                                      child: Text(
-                                          "No data, please upload some files!"))));
-                        } else {
-                          return Column(
-                              children: data
-                                  .map((item) => FileWidget(
-                                        content: item.content,
-                                        fileName: item.name,
-                                        uploadDate: item.uploadDate,
-                                        deleteFunction: () async {
-                                          await StorageService.deleteItem(
-                                              item.reference);
+                              _task!.snapshotEvents.listen((snapshot) {
+                                if (snapshot.state == TaskState.running) {
+                                  _buttonCaption =
+                                      "Sedang Upload ... ${(100.0 * (snapshot.bytesTransferred / snapshot.totalBytes)).toStringAsFixed(0)}%";
+                                  _uploadRunning = true;
+                                  setState(() {});
+                                  return;
+                                }
 
-                                          setState(() {});
-                                        },
-                                      ))
-                                  .toList());
-                        }
-                      }
-                    }
-
+                                if (snapshot.state == TaskState.success) {
+                                  _uploadRunning = false;
+                                  _buttonCaption = "Pilih file untuk Upload";
+                                  _task = null;
+                                  setState(() {});
+                                  return;
+                                }
+                              });
+                            } on FirebaseException catch (ex) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: kWarningColor,
+                                      content: Text(ex.message!)));
+                            }
+                          },
+                    child: Text(_buttonCaption)),
+                Container(width: 10),
+                if (_uploadRunning && _task != null)
+                  IconButton(
+                      onPressed: () async {
+                        await _task!.cancel();
+                        _uploadRunning = false;
+                        _buttonCaption = "Pilih File untuk Upload";
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.stop_circle_outlined,
+                          size: 36, color: kPrimaryColor))
+              ]),
+              Container(height: 10)
+            ])),
+        Container(height: defaultMargin),
+        FutureBuilder(
+            future: StorageService.getData(),
+            initialData: const <String>[],
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Center(child: Text(snapshot.error.toString()));
+                } else {
+                  if (_uploadRunning) {
                     return const Center(child: CircularProgressIndicator());
-                  })
-            ])));
+                  }
+
+                  var data = snapshot.data as List<FileDataModel>;
+                  if (data.isEmpty) {
+                    return Card(
+                        color: Colors.grey.shade300,
+                        child: const Padding(
+                            padding: EdgeInsets.all(defaultMargin),
+                            child: Center(
+                                child: Text(
+                                    "Belum ada data, harap upload beberapa File Scan Dokumen"))));
+                  } else {
+                    return Column(
+                        children: data
+                            .map((item) => FileWidget(
+                                  content: item.content,
+                                  fileName: item.name,
+                                  uploadDate: item.uploadDate,
+                                  deleteFunction: () async {
+                                    await StorageService.deleteItem(
+                                        item.reference);
+
+                                    setState(() {});
+                                  },
+                                ))
+                            .toList());
+                  }
+                }
+              }
+
+              return const Center(child: CircularProgressIndicator());
+            })
+      ]),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(defaultMargin),
+        child: KprimaryButtonWidget(
+          buttonColor: kPrimaryColor,
+          textValue: 'Selesai',
+          textColor: kWhiteColor,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
   }
+
+  AppBar appBarWidget() => AppBar(
+      backgroundColor: kPrimaryColor,
+      title: Text(
+        'Upload File Anda',
+        style: blackTextStyle.copyWith(color: kWhiteColor),
+      ));
 
   Future<XFile?> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -165,9 +184,13 @@ class FileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: Colors.grey.shade300,
+        margin: const EdgeInsets.only(bottom: defaultMargin),
+        elevation: 20,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(defaultCircular)),
+        color: kWhiteColor,
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(defaultMargin / 2),
           child: Row(children: [
             Image.memory(
               content,

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '/ui/theme.dart';
 import 'home_screen.dart';
+import 'storage_screen.dart';
 
 class RequestScreen extends StatefulWidget {
   RequestScreen({super.key});
@@ -64,32 +65,56 @@ class _RequestScreenState extends State<RequestScreen> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          heroTag: const Text('data'),
-          backgroundColor: kPrimaryColor,
-          onPressed: () {
-            context.read<AuthCubit>().signOut();
+      floatingActionButton: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthInitial) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HomeScreen(),
                 ));
-          },
-          child: const Icon(
-            Icons.add,
-            size: 40.0,
-          )),
+            print('logme berhasil pindah route');
+          }
+        },
+        builder: (context, state) {
+          return FloatingActionButton(
+              heroTag: const Text('data'),
+              backgroundColor: kPrimaryColor,
+              onPressed: () {
+                context.read<AuthCubit>().signOut();
+              },
+              child: const Icon(
+                Icons.add,
+                size: 40.0,
+              ));
+        },
+      ),
     );
   }
 
   AppBar appBar() {
     return AppBar(
+      automaticallyImplyLeading: false,
       titleSpacing: defaultMargin,
       elevation: 0.0,
-      toolbarHeight: 50,
-      backgroundColor: Colors.transparent,
+      toolbarHeight: 60,
+      backgroundColor: kPrimaryColor,
       title: fixedHeaderContentWidget(),
       centerTitle: false,
+      actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const StorageScreen(),
+                  ));
+            },
+            icon: Icon(
+              Icons.attach_file_rounded,
+              color: kWhiteColor,
+            ))
+      ],
     );
   }
 
@@ -100,7 +125,10 @@ class _RequestScreenState extends State<RequestScreen> {
         SizedBox(
           height: defaultMargin * 2,
         ),
-        KtitleWidget('Riwayat'),
+        KtitleWidget(
+          'Riwayat',
+          color: Colors.white,
+        ),
         SizedBox(
           height: defaultMargin,
         ),

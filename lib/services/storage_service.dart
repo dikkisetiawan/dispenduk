@@ -4,9 +4,9 @@ import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+User? credentialUser = FirebaseAuth.instance.currentUser;
 final userReference =
     FirebaseStorage.instance.ref().child(credentialUser!.uid.toString());
-User? credentialUser = FirebaseAuth.instance.currentUser;
 
 class StorageService {
   static Future<List<FileDataModel>> getData() async {
@@ -19,12 +19,11 @@ class StorageService {
 
       res.add(FileDataModel(content!, item.name, created, item));
     }
-    print('logme res $res');
+
     return res;
   }
 
   static Future deleteItem(Reference ref) async {
-    print('logme ref $ref');
     await ref.delete();
   }
 

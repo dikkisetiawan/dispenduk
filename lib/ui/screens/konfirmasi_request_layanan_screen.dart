@@ -49,8 +49,6 @@ class _KonfirmasiRequestLayananScreenState
   ];
 
   List<String?> keterangan = [
-    null,
-    null,
     'Berkas Kurang',
     'Harap periksa Dokumen anda',
     'Foto KTP anda belum diperbarui',
@@ -72,13 +70,16 @@ class _KonfirmasiRequestLayananScreenState
     return AppBar(
       elevation: 5,
       toolbarHeight: 50,
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kPrimaryColor,
       title: Column(
         children: [
           SizedBox(
             height: defaultMargin,
           ),
-          const KtitleWidget('Permohonan'),
+          const KtitleWidget(
+            'Permohonan',
+            color: Colors.white,
+          ),
         ],
       ),
       actions: [
@@ -90,9 +91,9 @@ class _KonfirmasiRequestLayananScreenState
                     builder: (context) => const StorageScreen(),
                   ));
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.attach_file_rounded,
-              color: Colors.blueAccent,
+              color: kWhiteColor,
             ))
       ],
     );
