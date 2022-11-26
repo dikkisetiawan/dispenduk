@@ -18,7 +18,7 @@ class CreateRequestLayananSuccess extends RequestLayananState {}
 class FetchAllRequestSuccess extends RequestLayananState {
   final List<RequestLayananModel> requests;
 
-  FetchAllRequestSuccess(this.requests);
+  const FetchAllRequestSuccess(this.requests);
 
   @override
   List<Object> get props => [requests];

@@ -245,8 +245,7 @@ class _KonfirmasiRequestLayananScreenState
     );
   }
 
-  Future<DateTime?> showDatePickerWidget(BuildContext context) =>
-      showDatePicker(
+  Future<void> showDatePickerWidget(BuildContext context) => showDatePicker(
               context: context,
               initialDate: DateTime.now(),
               firstDate: DateTime(2000),
@@ -264,7 +263,7 @@ class _KonfirmasiRequestLayananScreenState
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => RequestScreen(),
+                builder: (context) => const RequestScreen(),
               ));
         } else if (state is CreateRequestLayananFailed) {
           ScaffoldMessenger.of(context).showSnackBar(

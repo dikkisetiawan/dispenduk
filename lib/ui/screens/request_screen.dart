@@ -12,7 +12,7 @@ import 'home_screen.dart';
 import 'storage_screen.dart';
 
 class RequestScreen extends StatefulWidget {
-  RequestScreen({super.key});
+  const RequestScreen({super.key});
 
   @override
   State<RequestScreen> createState() => _RequestScreenState();
@@ -31,7 +31,7 @@ class _RequestScreenState extends State<RequestScreen> {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: appBar(),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         child: BlocBuilder<RequestLayananCubit, RequestLayananState>(
@@ -154,7 +154,7 @@ class ListItemWidget extends StatelessWidget {
     required this.keterangan,
   }) : super(key: key);
 
-  List<String> months = [
+  final List<String> months = [
     'Januari',
     'Februari',
     'Maret',

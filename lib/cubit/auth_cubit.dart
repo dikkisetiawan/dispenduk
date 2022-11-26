@@ -1,10 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/cubit/current_user_cubit.dart';
+
 import '/models/user_model.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import '../models/user_model.dart';
+
 import '/services/auth_service.dart';
 import '../services/user_service.dart';
 

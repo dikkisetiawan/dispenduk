@@ -19,6 +19,7 @@ class LoginScreen extends StatefulWidget {
   final String layananDipilih;
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -36,7 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     emailController;
     passwordController;
     super.dispose();
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: kBackgroundColor,
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.all(defaultMargin),
+          padding: const EdgeInsets.all(defaultMargin),
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Belum Punya Akun?',
                   style: greyTextStyle,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: defaultMargin / 2,
                 ),
                 GestureDetector(
@@ -184,7 +184,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-    ;
   }
 
   KprimaryButtonWidget loginButtonWidget(BuildContext context) {

@@ -3,7 +3,7 @@ import '../models/user_model.dart';
 import 'user_service.dart';
 
 class AuthService {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
 //login
   Future<UserModel> signInService({
@@ -11,13 +11,13 @@ class AuthService {
     required String password,
   }) async {
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       UserModel user = await UserService().getDataCurrentUser();
 
       return user;
     } catch (e) {
+      // ignore: use_rethrow_when_possible
       throw e;
     }
   }

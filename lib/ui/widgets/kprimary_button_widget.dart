@@ -7,7 +7,8 @@ class KprimaryButtonWidget extends StatelessWidget {
   final Color textColor;
   final Function() onPressed;
 
-  KprimaryButtonWidget({
+  const KprimaryButtonWidget({
+    super.key,
     required this.buttonColor,
     required this.textValue,
     required this.textColor,
@@ -40,6 +41,5 @@ class KprimaryButtonWidget extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

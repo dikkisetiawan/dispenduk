@@ -4,6 +4,7 @@ import 'package:dispenduk/cubit/current_user_cubit.dart';
 import 'package:dispenduk/ui/theme.dart';
 import 'package:dispenduk/ui/widgets/kprimary_button_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -75,6 +76,7 @@ class _State extends State<StorageScreen> {
                                 }
                               });
                             } on FirebaseException catch (ex) {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                       backgroundColor: kWarningColor,
@@ -164,9 +166,9 @@ class _State extends State<StorageScreen> {
       ));
 
   Future<XFile?> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
 
-    return await _picker.pickImage(source: ImageSource.gallery);
+    return await picker.pickImage(source: ImageSource.gallery);
   }
 }
 

@@ -22,7 +22,6 @@ class UserModel extends KartuKeluargaModel {
   }) : super([]);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         nomorIndukKependudukan,
         idKartuKeluarga,

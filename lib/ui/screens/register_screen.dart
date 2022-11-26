@@ -16,6 +16,7 @@ class RegisterScreen extends StatefulWidget {
   final String layananDipilih;
 
   @override
+  // ignore: library_private_types_in_public_api
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
@@ -33,7 +34,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     emailController;
     passwordController;
     confirmPasswordController;

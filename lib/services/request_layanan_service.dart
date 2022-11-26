@@ -1,9 +1,11 @@
+// ignore_for_file: use_rethrow_when_possible
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dispenduk/models/request_layanan_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class RequestLayananService {
-  CollectionReference _taskReference =
+  final CollectionReference _taskReference =
       FirebaseFirestore.instance.collection('requests');
 
   User? user = FirebaseAuth.instance.currentUser;
@@ -30,14 +32,14 @@ class RequestLayananService {
           .where('uid', isEqualTo: user!.uid)
           .get(); //where uid current user
 
-      List<RequestLayananModel> RequestLayananList = result.docs.map(
+      List<RequestLayananModel> requestLayananList = result.docs.map(
         (e) {
           return RequestLayananModel.fromJson(
               e.id, e.data() as Map<String, dynamic>);
         },
       ).toList();
 
-      return RequestLayananList;
+      return requestLayananList;
     } catch (e) {
       throw e;
     }

@@ -54,6 +54,6 @@ BoxShadow kShadow = BoxShadow(
     blurRadius: 20.0,
     color: Colors.black.withOpacity(0.2),
     spreadRadius: 2.0,
-    offset: Offset(5, 10));
+    offset: const Offset(5, 10));
 
 BorderRadius kBorderRadius = BorderRadius.circular(defaultCircular);
