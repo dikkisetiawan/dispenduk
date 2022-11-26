@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../cubit/current_user_cubit.dart';
 import '../widgets/info_layanan_widget.dart';
 import '../widgets/ktitle_widget.dart';
 import '/cubit/auth_cubit.dart';
@@ -112,7 +113,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   BlocConsumer<AuthCubit, AuthState> buttonWidget() {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        print('the state is $state');
         if (state is AuthFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -126,6 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         }
         if (state is AuthSuccess) {
+          context.read<CurrentUserCubit>().setUid(state.user.id!);
           Navigator.push(
               context,
               MaterialPageRoute(

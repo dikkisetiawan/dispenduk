@@ -11,8 +11,6 @@ class AuthService {
     required String password,
   }) async {
     try {
-      _auth.setPersistence(Persistence.NONE);
-
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
@@ -20,7 +18,6 @@ class AuthService {
 
       return user;
     } catch (e) {
-      print('services Mencoba signin $e');
       throw e;
     }
   }
@@ -31,8 +28,6 @@ class AuthService {
     required String password,
   }) async {
     try {
-      _auth.setPersistence(Persistence.NONE);
-
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
@@ -46,20 +41,14 @@ class AuthService {
 
       return user;
     } catch (e) {
-      print('Mencoba signUp $e');
       rethrow;
     }
   }
 
   Future<void> signOut() async {
     try {
-      _auth.setPersistence(Persistence.NONE);
-
       await _auth.signOut();
-      _auth.currentUser!.reload();
-      print('logme berhasil logout');
     } catch (e) {
-      print('logme Mencoba logout $e');
       rethrow;
     }
   }

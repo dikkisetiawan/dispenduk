@@ -2,11 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 enum Status {
-  Pending([Colors.grey, Icons.browse_gallery_outlined]),
-  Verifikasi([Colors.blue, Icons.saved_search_outlined]),
-  Revisi([Colors.orange, Icons.warning_amber_outlined]),
-  Ditolak([Colors.red, Icons.warning_amber_outlined]),
-  Validasi([Colors.green, Icons.done_outline_outlined]);
+  pending([Colors.grey, Icons.browse_gallery_outlined]),
+  verifikasi([Colors.blue, Icons.saved_search_outlined]),
+  revisi([Colors.orange, Icons.warning_amber_outlined]),
+  ditolak([Colors.red, Icons.warning_amber_outlined]),
+  validasi([Colors.green, Icons.done_outline_outlined]);
 
   const Status(this.statusValue);
   final List<dynamic> statusValue;
@@ -19,7 +19,7 @@ class RequestLayananModel extends Equatable {
   final Status status;
   final String? keterangan;
 
-  RequestLayananModel({
+  const RequestLayananModel({
     this.idPermohonan,
     this.tanggalPermohonan,
     required this.layanan,
@@ -44,7 +44,6 @@ class RequestLayananModel extends Equatable {
       );
 
   @override
-  // TODO: implement props
   List<Object?> get props =>
       [idPermohonan, status, tanggalPermohonan, layanan, keterangan];
 }

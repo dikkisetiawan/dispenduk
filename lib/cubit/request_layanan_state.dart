@@ -30,7 +30,6 @@ class FetchRequestFailed extends RequestLayananState {
   const FetchRequestFailed(this.error);
 
   @override
-  // TODO: implement props
   List<Object> get props => [error];
 }
 
@@ -40,6 +39,5 @@ class CreateRequestLayananFailed extends RequestLayananState {
   const CreateRequestLayananFailed(this.error);
 
   @override
-  // TODO: implement props
   List<Object> get props => [error];
 }

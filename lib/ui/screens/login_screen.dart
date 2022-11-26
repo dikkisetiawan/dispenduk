@@ -1,3 +1,4 @@
+import '../../cubit/current_user_cubit.dart';
 import '/ui/screens/konfirmasi_request_layanan_screen.dart';
 
 import '../widgets/info_layanan_widget.dart';
@@ -100,16 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
-                if (state is AuthSuccess) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          KonfirmasiRequestLayananScreen(
-                              layananDipilih: widget.layananDipilih),
-                    ),
-                  );
-                } else if (state is AuthFailed) {
+                if (state is AuthFailed) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       behavior: SnackBarBehavior.floating,
@@ -120,6 +112,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   );
+                }
+
+                if (state is AuthSuccess) {
+                  context.read<CurrentUserCubit>().setUid(state.user.id!);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => KonfirmasiRequestLayananScreen(
+                            layananDipilih: widget.layananDipilih),
+                      ));
                 }
               },
               builder: (context, state) {

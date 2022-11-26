@@ -54,6 +54,7 @@ class UserService {
       DocumentSnapshot snapshot =
           await _userReference.doc(credentialUser!.uid).get();
       return UserModel(
+        id: snapshot.id,
         email: snapshot['email'],
         nomorIndukKependudukan: snapshot['nik'],
         idKartuKeluarga: snapshot['kk'],
@@ -62,7 +63,6 @@ class UserService {
         tanggalLahir: DateTime.tryParse(snapshot['tanggalLahir']),
       );
     } catch (e) {
-      print('user_service.dart get data error $e');
       rethrow;
     }
   }

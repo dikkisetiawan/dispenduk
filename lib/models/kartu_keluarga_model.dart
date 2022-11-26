@@ -7,9 +7,8 @@ class KartuKeluargaModel extends Equatable {
   final int? idKartuKeluarga;
   final List<UserModel> anggotaKeluarga;
 
-  KartuKeluargaModel(this.anggotaKeluarga, {this.idKartuKeluarga});
+  const KartuKeluargaModel(this.anggotaKeluarga, {this.idKartuKeluarga});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [idKartuKeluarga, anggotaKeluarga];
 }

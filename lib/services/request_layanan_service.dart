@@ -36,10 +36,9 @@ class RequestLayananService {
               e.id, e.data() as Map<String, dynamic>);
         },
       ).toList();
-      print('request_layanan_service.dart success $RequestLayananList');
+
       return RequestLayananList;
     } catch (e) {
-      print('request_layanan_service.dart catch $e');
       throw e;
     }
   }

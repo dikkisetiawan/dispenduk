@@ -18,7 +18,8 @@ import '../widgets/ktext_field_widget.dart';
 import '../widgets/ktitle_widget.dart';
 
 class KonfirmasiRequestLayananScreen extends StatefulWidget {
-  KonfirmasiRequestLayananScreen({super.key, required this.layananDipilih});
+  const KonfirmasiRequestLayananScreen(
+      {super.key, required this.layananDipilih});
 
   final String layananDipilih;
 
@@ -41,11 +42,11 @@ class _KonfirmasiRequestLayananScreenState
   DateTime? _dateTime;
 
   List<Status> status = [
-    Status.Ditolak,
-    Status.Pending,
-    Status.Revisi,
-    Status.Validasi,
-    Status.Verifikasi
+    Status.ditolak,
+    Status.pending,
+    Status.revisi,
+    Status.validasi,
+    Status.verifikasi
   ];
 
   List<String?> keterangan = [
@@ -72,11 +73,11 @@ class _KonfirmasiRequestLayananScreenState
       toolbarHeight: 50,
       backgroundColor: kPrimaryColor,
       title: Column(
-        children: [
+        children: const [
           SizedBox(
             height: defaultMargin,
           ),
-          const KtitleWidget(
+          KtitleWidget(
             'Permohonan',
             color: Colors.white,
           ),
@@ -174,7 +175,7 @@ class _KonfirmasiRequestLayananScreenState
             height: defaultMargin,
           ),
           KtextFieldWidget(
-            title: 'Nama Induk Kependudukan',
+            title: 'Nomor Induk Kependudukan',
             hintText: nik == null ? 'No NIK' : nik.toString(),
             controller: nomorIndukKependudukanController,
             suffixIcon: const Icon(Icons.no_accounts),
@@ -259,8 +260,6 @@ class _KonfirmasiRequestLayananScreenState
   BlocConsumer<RequestLayananCubit, RequestLayananState> buttonWidget() {
     return BlocConsumer<RequestLayananCubit, RequestLayananState>(
       listener: (context, state) {
-        print('konfirmasi_layanan_request_screen.dart the state is $state');
-
         if (state is CreateRequestLayananSuccess) {
           Navigator.push(
               context,

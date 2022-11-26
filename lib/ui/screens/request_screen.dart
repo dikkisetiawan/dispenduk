@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubit/auth_cubit.dart';
+import '../../cubit/current_user_cubit.dart';
 import '../../cubit/request_layanan_cubit.dart';
 import '/models/request_layanan_model.dart';
 import '/ui/widgets/ktitle_widget.dart';
@@ -73,7 +74,6 @@ class _RequestScreenState extends State<RequestScreen> {
                 MaterialPageRoute(
                   builder: (context) => const HomeScreen(),
                 ));
-            print('logme berhasil pindah route');
           }
         },
         builder: (context, state) {
@@ -81,6 +81,7 @@ class _RequestScreenState extends State<RequestScreen> {
               heroTag: const Text('data'),
               backgroundColor: kPrimaryColor,
               onPressed: () {
+                context.read<CurrentUserCubit>().setUid('null');
                 context.read<AuthCubit>().signOut();
               },
               child: const Icon(

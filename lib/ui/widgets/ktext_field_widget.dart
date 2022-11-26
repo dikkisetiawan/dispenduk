@@ -31,7 +31,7 @@ class KtextFieldWidget extends StatelessWidget {
                       letterSpacing: 0.0, fontSize: 18.0),
                 ),
               )
-            : SizedBox(),
+            : const SizedBox(),
         Container(
           decoration: BoxDecoration(
             color: kDarkGreyColor.withOpacity(0.2),

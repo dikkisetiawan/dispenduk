@@ -14,10 +14,8 @@ class RequestLayananCubit extends Cubit<RequestLayananState> {
       emit(CreateRequestLayananLoading());
       await RequestLayananService().createRequestService(request);
       emit(CreateRequestLayananSuccess());
-      print('success create request');
     } catch (e) {
       emit(CreateRequestLayananFailed(e.toString()));
-      print(e);
     }
   }
 
@@ -29,10 +27,8 @@ class RequestLayananCubit extends Cubit<RequestLayananState> {
           await RequestLayananService().fetchRequestsByCurrentUser();
 
       emit(FetchAllRequestSuccess(requests));
-      print('success fetch requests');
     } catch (e) {
       emit(FetchRequestFailed(e.toString()));
-      print(e);
     }
   }
 }

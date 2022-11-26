@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:dispenduk/cubit/current_user_cubit.dart';
 import 'package:dispenduk/ui/theme.dart';
 import 'package:dispenduk/ui/widgets/kprimary_button_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -96,7 +98,8 @@ class _State extends State<StorageScreen> {
             ])),
         Container(height: defaultMargin),
         FutureBuilder(
-            future: StorageService.getData(),
+            future: StorageService.getData(
+                context.read<CurrentUserCubit>().getUid()),
             initialData: const <String>[],
             builder: (ctx, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
